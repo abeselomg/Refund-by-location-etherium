@@ -79,6 +79,28 @@ contract gpsContract{
 
     // ToDo: compare time, check area value
 
+    function sqrt(uint x) private returns (uint y) {
+        uint z = (x + 1) / 2;
+        y = x;
+        while (z < y) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
+    }
+    function pow(uint256 A, uint256 B) private returns (uint256){ 
+            return A**B;
+        }
+
+    function calculateDistance(GpsCordinates memory gps_cor,GpsCordinates memory gps_cor2) private returns(uint){
+        uint256 lat1=gps_cor.latitude;
+        uint256 lat2=gps_cor2.latitude;
+        uint256 long1=gps_cor.longtude;
+        uint256 long2=gps_cor2.longtude;
+        uint256 distance=0;
+        distance=sqrt(pow(lat1-lat2,2)+pow(long1-long2,2));
+        return distance;
+    }
+
 
 
     function terminateContract(address emp_add) private {
