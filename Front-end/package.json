@@ -1,5 +1,5 @@
 {
-  "name": "the-school-app",
+  "name": "refund-by-location",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@googlemaps/react-wrapper": "^1.1.35",
     "@zeit/next-less": "1.0.1",
     "antd": "^4.21.7",
     "axios": "^0.21.1",
@@ -23,6 +24,7 @@
     "null-loader": "3.0.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-hook-geolocation": "^1.0.11",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",

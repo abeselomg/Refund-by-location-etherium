@@ -4,6 +4,9 @@ pragma solidity 0.8.15;
 //e9445f523f0940059e14a148a598ef3d : PROJECT ID
 //c1b5a2f4325c473a93d38033851fb4be : PROJECT SECRET
 
+// Deploying contracts with the account: 0xd42E30f8E8baCD00744ce6100c74050B697bE03c
+// gpsContract deployed to: 0x72EdA49AdaF59a169b15042a1759A237160266cf
+
 contract gpsContract {
     address public owner;
     address[] private Employees;
@@ -23,10 +26,11 @@ contract gpsContract {
         
     }
     struct EmployeeContract {
-        //address emp_add;
+        address emp_add;
         uint256 latitude;
         uint256 longtude;
         bool isactive;
+        bool ispayed;
         uint8 start_hour;
         uint8 start_minute;
         uint8 end_hour;
@@ -105,28 +109,31 @@ contract gpsContract {
 
     //array of structs
 
-    function getActiveCount() public view returns (uint256) {
-        uint256 count = 0;
-        for (uint256 i = 0; i < Employees.length; i++) {
-            if (EmployeeContrInfo[Employees[i]].isactive) {
-                count++;
-            }
-        }
-        return count;
+    function getkeys() public pure returns(string [] memory){
+
+        string[] memory all_keys= new string[](11);
+        all_keys[0]="emp_add";
+        all_keys[1]="longtude_val";
+        all_keys[2]="latitude_val";
+        all_keys[3]="isactive";
+        all_keys[4]="ispayed";
+        all_keys[5]="start_hour";
+        all_keys[6]="start_minute";
+        all_keys[7]="end_hour";
+        all_keys[8]="end_minute";
+        all_keys[9]="amount";
+        all_keys[10]="radius";
+
+        return all_keys;
+}
+
+function get_contracts() public view returns (string [] memory, EmployeeContract [] memory){
+    string[] memory keys=getkeys();
+     EmployeeContract[] memory all_contracts= new EmployeeContract[](Employees.length);
+     for (uint256 i = 0; i < Employees.length; i++) {
+        all_contracts[i]=EmployeeContrInfo[Employees[i]];   
     }
-
-
-
-function getActiveEmployees() public view returns (EmployeeContract[] memory) {
-    uint256 count =getActiveCount() ;
-    EmployeeContract[] memory active_employees= new EmployeeContract[](count);
-    //uint256[] memory List = new uint256[](count);
-    for (uint256 i = 0; i < Employees.length; i++) {
-        if (EmployeeContrInfo[Employees[i]].isactive) {
-            active_employees[i]=EmployeeContrInfo[Employees[i]];
-        }
-    }
-    return active_employees;
+    return (keys,all_contracts);
 }
 
     function createContract(
@@ -142,9 +149,11 @@ function getActiveEmployees() public view returns (EmployeeContract[] memory) {
         
         uint8 radius
     ) public payable {
+        EmployeeContrInfo[emp_add].emp_add = emp_add;
         EmployeeContrInfo[emp_add].latitude = latitude_val;
         EmployeeContrInfo[emp_add].longtude = longtude_val;
         EmployeeContrInfo[emp_add].isactive = true;
+        EmployeeContrInfo[emp_add].ispayed = false;
         EmployeeContrInfo[emp_add].start_hour=start_hour;
         EmployeeContrInfo[emp_add].start_minute = start_minute;
         EmployeeContrInfo[emp_add].end_hour = end_hour;
@@ -156,11 +165,14 @@ function getActiveEmployees() public view returns (EmployeeContract[] memory) {
     // ToDo: compare time, check area value
 
     function terminateContract(address emp_add) private {
+        
         EmployeeContrInfo[emp_add].isactive = false;
     }
 
     function pay(address  emp_add) public payable{
         EmployeeContrInfo[emp_add].isactive = false;
+        EmployeeContrInfo[emp_add].ispayed = true;
+
        payable(emp_add).transfer(EmployeeContrInfo[emp_add].amount);
         
 

@@ -106,6 +106,7 @@ function WebTree() {
       setIsModalVisible(false);
     }
   }
+//npx hardhat run scripts/deploy.js --network rinkeby
 
   function listEmployeesContract() {
     if (typeof window.ethereum !== "undefined") {
@@ -118,9 +119,16 @@ function WebTree() {
       contract.getActiveEmployees().then(console.log);
     }
   }
-    const onFinish = (values) => {
-      console.log("Success:", values);
-    };
+  const onFinish = (values) => {
+    values.end_time=moment(values.end_time).format("HH:mm");
+    values.start_time = moment(values.start_time).format("HH:mm");
+
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   // Return
   return (
@@ -140,7 +148,6 @@ function WebTree() {
       >
         <Form
           name="basic"
-          form={form}
           labelCol={{
             span: 8,
           }}
@@ -151,43 +158,105 @@ function WebTree() {
             remember: true,
           }}
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item>
-            <Input placeholder="Address" name="address" />
-          </Form.Item>
-          <Form.Item>
-            <Input placeholder="Longtude" name="long" />
-          </Form.Item>
-          <Form.Item>
-            <Input placeholder="Latitude" name="lat" />
-          </Form.Item>
-          <Form.Item>
-            <Input placeholder="Amount(ETH)" name="amount" />
-          </Form.Item>
-          <Form.Item>
-            <TimePicker
-              placeholder="Start time"
-              format={"HH:mm"}
-              name="starttime"
-            />
-          </Form.Item>
-          <Form.Item>
-            <TimePicker
-              placeholder="End time"
-              format={"HH:mm"}
-              name="endtime"
-            />
-          </Form.Item>
-          <Form.Item>
-            <InputNumber placeholder="Valid Radius" name="radius" />
-          </Form.Item>
-          {/* <Divider /> */}
           <Form.Item
-            wrapperCol={{ offset: 8, span: 16 }}
-            style={{ textAlign: "right" }}
+            label="Address"
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: "Please input Employee Address!",
+              },
+            ]}
           >
-            <Button onClick={handleCancel}>Cancel</Button>
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Longtude"
+            name="longtude"
+            rules={[
+              {
+                required: true,
+                message: "Please input Longtude!",
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+
+          <Form.Item
+            label="Latitude"
+            name="latitude"
+            rules={[
+              {
+                required: true,
+                message: "Please input Latitude!",
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+
+          <Form.Item
+            label="Amount"
+            name="amount"
+            rules={[
+              {
+                required: true,
+                message: "Please input Amount in ETH!",
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+
+          <Form.Item
+            label="Start Time"
+            name="start_time"
+            rules={[
+              {
+                required: true,
+                message: "Please input Start Time!",
+              },
+            ]}
+          >
+            <TimePicker format={"hh:mm"} />
+          </Form.Item>
+          <Form.Item
+            label="End Time"
+            name="end_time"
+            rules={[
+              {
+                required: true,
+                message: "Please input Start Time!",
+              },
+            ]}
+          >
+            <TimePicker format={"hh:mm"} />
+          </Form.Item>
+
+          <Form.Item
+            label="Radius"
+            name="radius"
+            rules={[
+              {
+                required: true,
+                message: "Please input Radius!",
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
