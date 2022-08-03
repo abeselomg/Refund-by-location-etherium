@@ -8,7 +8,7 @@ The refund by location smart contract is aimed to be used when one party, for ex
 If, at any point, the GPS sensor indicates that an employee is outside the range of the agreed GPS area, the contract state will be updated to indicate that it is out of compliance. 
 
 ## Requirements
-The project requires the following: Node.JS
+The project requires the following: Node.JS,Flutter
 
 ## Contrbutors
 Abeselom Gebrekidan
